@@ -222,7 +222,7 @@ const orgName = computed(() => {
 function packageRoute(ver?: string | null) {
   return {
     name: 'package' as const,
-    params: { ...parsePackageRouteParams(packageName.value), version: ver },
+    params: getPackagePageParams(packageName.value, ver),
   }
 }
 

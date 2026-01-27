@@ -27,7 +27,7 @@ const emit = defineEmits<{
         class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
       >
         <NuxtLink
-          :to="{ name: 'package', params: parsePackageRouteParams(result.package.name) }"
+          :to="{ name: 'package', params: getPackagePageParams(result.package.name) }"
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
           class="focus-visible:outline-none decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
           :data-result-index="index"

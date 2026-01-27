@@ -40,7 +40,7 @@ function hasProvenance(version: PackumentVersion | undefined): boolean {
 function versionRoute(version: string): RouteLocationRaw {
   return {
     name: 'package',
-    params: { ...parsePackageRouteParams(props.packageName), version },
+    params: getPackagePageParams(props.packageName, version),
   }
 }
 
