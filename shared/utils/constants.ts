@@ -5,9 +5,7 @@ export const CACHE_MAX_AGE_ONE_DAY = 60 * 60 * 24
 export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365
 
 // API Strings
-// // shared/utils/constants.ts
-export const NPMX_SITE: `${string}:${string}` = 'https://npmx.dev'
-// export const NPMX_SITE = 'https://npmx.dev'
+export const NPMX_SITE = 'https://npmx.dev'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
