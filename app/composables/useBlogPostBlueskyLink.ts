@@ -1,7 +1,5 @@
 import { Constellation } from '#shared/utils/constellation'
-// import { NPMX_SITE } from '#shared/utils/constants'
-
-const BLOG_BACKLINK_TTL_IN_SECONDS = 60 * 5
+import { NPMX_SITE } from '#shared/utils/constants'
 
 export interface BlogPostBlueskyLink {
   did: string
@@ -15,9 +13,7 @@ export function useBlogPostBlueskyLink(slug: MaybeRefOrGetter<string | null | un
   const blogUrl = computed(() => {
     const s = toValue(slug)
     if (!s) return null
-    // return `${NPMX_SITE}/blog/${s}`
-    // TODO: Deploy Preview used for testing remove before merge
-    return `https://npmxdev-git-fork-jonathanyeong-feat-atproto-blog-fe-poetry.vercel.app/blog/${s}`
+    return `${NPMX_SITE}/blog/${s}`
   })
 
   return useLazyAsyncData<BlogPostBlueskyLink | null>(
@@ -34,14 +30,10 @@ export function useBlogPostBlueskyLink(slug: MaybeRefOrGetter<string | null | un
           url,
           'app.bsky.feed.post',
           'embed.external.uri',
-          1,
-          undefined,
-          false,
-          [['did:plc:5ixnpdbogli5f7fbbee5fmuq']],
-          BLOG_BACKLINK_TTL_IN_SECONDS,
+          [['did:plc:jbeaa5kdaladzwq3r7f5xgwe']],
         )
 
-        const embedRecord = embedBacklinks.records[0]
+        const embedRecord = embedBacklinks.records[embedBacklinks.records.length - 1]
         if (embedRecord) {
           return {
             did: embedRecord.did,
@@ -54,15 +46,11 @@ export function useBlogPostBlueskyLink(slug: MaybeRefOrGetter<string | null | un
         const { data: facetBacklinks } = await constellation.getBackLinks(
           url,
           'app.bsky.feed.post',
-          'facets.features.uri',
-          1,
-          undefined,
-          false,
-          [],
-          BLOG_BACKLINK_TTL_IN_SECONDS,
+          'facets[].features[app.bsky.richtext.facet#link].uri',
+          [['did:plc:jbeaa5kdaladzwq3r7f5xgwe']],
         )
 
-        const facetRecord = facetBacklinks.records[0]
+        const facetRecord = facetBacklinks.records[facetBacklinks.records.length - 1]
         if (facetRecord) {
           return {
             did: facetRecord.did,

@@ -57,10 +57,10 @@ export class Constellation {
     subject: string,
     collection: string,
     recordPath: string,
+    filterByDids: [string][] = [],
     limit = 16,
     cursor?: string,
     reverse = false,
-    filterByDids: [string][] = [],
     ttl: number | undefined = undefined,
   ) {
     const source = encodeURIComponent(`${collection}:${recordPath}`)
