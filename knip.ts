@@ -26,6 +26,7 @@ const config: KnipConfig = {
         'scripts/**/*.ts',
       ],
       project: ['**/*.{ts,vue,cjs,mjs}'],
+      ignore: ['test/fixtures/**'],
       ignoreDependencies: [
         '@iconify-json/*',
         '@vercel/kv',
