@@ -53,7 +53,7 @@ function getHostname(uri: string): string {
         v-if="comment.author.avatar"
         :src="comment.author.avatar"
         :alt="comment.author.displayName || comment.author.handle"
-        :class="['rounded-full m-0', depth === 0 ? 'w-10 h-10' : 'w-8 h-8']"
+        :class="['rounded-full', depth === 0 ? 'w-10 h-10' : 'w-8 h-8']"
         width="40"
         height="40"
         loading="lazy"
@@ -123,7 +123,7 @@ function getHostname(uri: string): string {
           <img
             :src="img.thumb"
             :alt="img.alt || 'Embedded image'"
-            class="rounded-lg max-w-48 max-h-36 object-cover m-0"
+            class="rounded-lg max-w-48 max-h-36 object-cover"
             loading="lazy"
           />
         </a>
@@ -141,7 +141,7 @@ function getHostname(uri: string): string {
           v-if="comment.embed.external.thumb"
           :src="comment.embed.external.thumb"
           :alt="comment.embed.external.title"
-          class="w-20 h-20 rounded object-cover shrink-0 m-0"
+          class="w-20 h-20 rounded object-cover shrink-0"
           loading="lazy"
         />
         <div class="min-w-0">
@@ -172,7 +172,7 @@ function getHostname(uri: string): string {
 
       <!-- Nested replies -->
       <template v-if="comment.replies.length > 0">
-        <div v-if="depth < MaxDepth" class="mt-2 pl-2 border-l-2 border-border flex flex-col">
+        <div v-if="depth < MaxDepth" class="mt-2 ps-2 border-is-2 border-border flex flex-col">
           <BlueskyComment
             v-for="reply in comment.replies"
             :key="reply.uri"

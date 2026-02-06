@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { Author } from '#shared/schemas/blog'
+
 defineProps<{
-  /** First and last name - Potentially Multiple? i.e. co-authors */
-  author: string
+  /** Authors of the blog post */
+  authors: Author[]
   /** Blog Title */
   title: string
   /** Tags such as OpenSource, Architecture, Community, etc. */
@@ -23,7 +25,7 @@ const emit = defineEmits<{
 
 <template>
   <article
-    class="group card-interactive relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
+    class="group relative hover:bg-bg-subtle transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 -mx-4 px-4 -my-2 py-2 sm:-mx-6 sm:px-6 sm:-my-3 sm:py-3 sm:rounded-md"
   >
     <NuxtLink
       :to="`/blog/${path}`"
@@ -32,49 +34,26 @@ const emit = defineEmits<{
       @focus="index != null && emit('focus', index)"
       @mouseenter="index != null && emit('focus', index)"
     >
-      <!-- Avatar placeholder -->
-      <div
-        class="w-10 h-10 shrink-0 flex items-center justify-center border border-border rounded-full bg-bg-muted"
-        aria-hidden="true"
-      >
-        <span class="text-lg text-fg-subtle font-mono">
-          {{
-            author
-              .split(' ')
-              .map(n => n[0])
-              .join('')
-              .toUpperCase()
-          }}
-        </span>
-      </div>
-
       <!-- Text Content -->
-      <div class="flex-1 min-w-0 text-left">
+      <div class="flex-1 min-w-0 text-left gap-2">
+        <span class="text-xs text-fg-muted font-mono">{{ published }}</span>
         <h2
-          class="font-mono text-base font-medium text-fg group-hover:text-primary transition-colors hover:underline"
+          class="font-mono text-xl font-medium text-fg group-hover:text-primary transition-colors hover:underline"
         >
           {{ title }}
         </h2>
-
-        <div class="flex items-center gap-2 text-xs text-fg-muted font-mono">
-          <span>{{ author }}</span>
-          <span>•</span>
-          <span>{{ published }}</span>
-        </div>
-
-        <p v-if="excerpt" class="text-sm text-muted-foreground mt-2 line-clamp-2 no-underline">
+        <p v-if="excerpt" class="text-fg-muted leading-relaxed line-clamp-2 no-underline">
           {{ excerpt }}
         </p>
+        <div class="flex flex-wrap items-center gap-2 text-xs text-fg-muted font-mono mt-4">
+          <AuthorList :authors="authors" />
+        </div>
       </div>
 
       <span
-        class="i-carbon-arrow-right w-4 h-4 text-fg-subtle group-hover:text-fg transition-colors shrink-0"
+        class="i-carbon:arrow-right w-4 h-4 text-fg-subtle group-hover:text-fg relative inset-is-0 group-hover:inset-is-1 transition-all duration-200 shrink-0"
         aria-hidden="true"
       />
     </NuxtLink>
   </article>
 </template>
-<!-- :class="{
-  'bg-bg-muted border-border-hover': selected,
-  'border-accent/30 bg-accent/5': isExactMatch,
-}" -->
