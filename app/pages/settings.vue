@@ -4,7 +4,14 @@ const canGoBack = useCanGoBack()
 const { settings } = useSettings()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
-const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
+const { currentLocaleStatus, isSourceLocale, getLocaleStatus } = useI18nStatus()
+
+const localeItems = computed(() =>
+  locales.value.map(loc => ({
+    label: formatLocaleLabel(loc.name ?? '', getLocaleStatus(loc.code)),
+    value: loc.code,
+  })),
+)
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
@@ -219,7 +226,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               <ClientOnly>
                 <SelectField
                   id="language-select"
-                  :items="locales.map(loc => ({ label: loc.name ?? '', value: loc.code }))"
+                  :items="localeItems"
                   v-model="locale"
                   @update:modelValue="setLocale($event as typeof locale)"
                   block
