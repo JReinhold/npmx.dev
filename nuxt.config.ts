@@ -286,6 +286,10 @@ export default defineNuxtConfig({
     },
   },
 
+  unocss: {
+    mode: 'per-module',
+  },
+
   vite: {
     optimizeDeps: {
       include: [
