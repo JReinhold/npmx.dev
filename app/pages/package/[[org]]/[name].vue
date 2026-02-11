@@ -367,8 +367,6 @@ const {
   forks,
   forksLink,
   releases,
-  releasesLink,
-  releasesPending,
 } = useRepoMeta(repositoryUrl)
 
 const currentVersionRelease = computed(() => {

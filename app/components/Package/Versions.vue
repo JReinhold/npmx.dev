@@ -869,11 +869,9 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                           version: group.versions[0]?.version,
                         })
                       "
+                      classicon="i-carbon-catalog size-3"
                       class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
-                    >
-                      <span class="i-carbon-catalog size-3" aria-hidden="true" />
-                      <span class="sr-only">{{ $t('package.releases.view_release') }}</span>
-                    </LinkBase>
+                    />
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
                     <DateTime
