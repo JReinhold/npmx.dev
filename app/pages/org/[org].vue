@@ -129,7 +129,8 @@ function handleClearFilter(chip: FilterChip) {
 const activeTab = shallowRef<'members' | 'teams'>('members')
 
 // Canonical URL for this org page
-const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
+const { siteUrl } = useAppUrls()
+const canonicalUrl = computed(() => `${siteUrl}/@${orgName.value}`)
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],

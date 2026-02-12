@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { docsUrl } = useAppUrls()
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
@@ -92,7 +93,7 @@ const showModal = () => modalRef.value?.showModal?.()
               </li>
             </ul>
           </Modal>
-          <LinkBase to="https://docs.npmx.dev">
+          <LinkBase :to="docsUrl">
             {{ $t('footer.docs') }}
           </LinkBase>
           <LinkBase to="https://repo.npmx.dev">

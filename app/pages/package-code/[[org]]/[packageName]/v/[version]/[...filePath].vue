@@ -249,7 +249,8 @@ function copyPermalinkUrl() {
 }
 
 // Canonical URL for this code page
-const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
+const { siteUrl } = useAppUrls()
+const canonicalUrl = computed(() => `${siteUrl}${getCodeUrl(route.params)}`)
 
 // Toggle markdown view mode
 const markdownViewModes = [

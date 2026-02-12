@@ -44,7 +44,8 @@ useHead({
 })
 
 if (import.meta.server) {
-  setJsonLd(createWebSiteSchema())
+  const { siteUrl } = useAppUrls()
+  setJsonLd(createWebSiteSchema(siteUrl))
 }
 
 onKeyDown(

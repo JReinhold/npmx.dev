@@ -471,8 +471,9 @@ const createPackageInfo = computed(() => {
 })
 
 // Canonical URL for this package page
+const { siteUrl } = useAppUrls()
 const canonicalUrl = computed(() => {
-  const base = `https://npmx.dev/package/${packageName.value}`
+  const base = `${siteUrl}/package/${packageName.value}`
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 

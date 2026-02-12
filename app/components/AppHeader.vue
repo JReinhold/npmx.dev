@@ -12,6 +12,7 @@ withDefaults(
   },
 )
 
+const { docsUrl } = useAppUrls()
 const { isConnected, npmUser } = useConnector()
 
 const desktopLinks = computed<NavigationConfig>(() => [
@@ -85,7 +86,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
       {
         name: 'Docs',
         label: $t('footer.docs'),
-        href: 'https://docs.npmx.dev',
+        href: docsUrl,
         target: '_blank',
         type: 'link',
         external: true,

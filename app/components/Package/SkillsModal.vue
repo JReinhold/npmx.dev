@@ -27,9 +27,8 @@ function toggleSkill(dirName: string) {
 type InstallMethod = 'skills-npm' | 'skills-cli'
 const selectedMethod = ref<InstallMethod>('skills-npm')
 
-const baseUrl = computed(() =>
-  typeof window !== 'undefined' ? window.location.origin : 'https://npmx.dev',
-)
+const { siteUrl } = useAppUrls()
+const baseUrl = computed(() => (typeof window !== 'undefined' ? window.location.origin : siteUrl))
 
 const installCommand = computed(() => {
   if (!props.skills.length) return null

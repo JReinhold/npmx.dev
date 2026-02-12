@@ -2,6 +2,7 @@
 
 import Git from 'simple-git'
 import * as process from 'node:process'
+import { NPMX_SITE_PROD } from '../shared/utils/constants'
 
 export { version } from '../package.json'
 
@@ -87,6 +88,11 @@ export const getProductionUrl = () =>
         : undefined
     : undefined
 
+export const getSiteUrl = (isDevelopment: boolean) => {
+  if (isDevelopment) return 'http://localhost:3000'
+  return getPreviewUrl() || getProductionUrl() || NPMX_SITE_PROD
+}
+
 const git = Git()
 export async function getGitInfo() {
   let branch
@@ -140,6 +146,7 @@ export async function getEnv(isDevelopment: boolean) {
         : 'release'
   const previewUrl = getPreviewUrl()
   const productionUrl = getProductionUrl()
+  const siteUrl = getSiteUrl(isDevelopment)
   return {
     commit,
     shortCommit,
@@ -147,5 +154,6 @@ export async function getEnv(isDevelopment: boolean) {
     env,
     previewUrl,
     productionUrl,
+    siteUrl,
   } as const
 }

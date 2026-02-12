@@ -1,7 +1,7 @@
 import type { BuildInfo, EnvType } from '../shared/types'
 import { createResolver, defineNuxtModule } from 'nuxt/kit'
 import { isCI } from 'std-env'
-import { getEnv, getFileLastUpdated, version } from '../config/env'
+import { getEnv, getFileLastUpdated, getSiteUrl, version } from '../config/env'
 
 const { resolve } = createResolver(import.meta.url)
 
@@ -15,6 +15,7 @@ export default defineNuxtModule({
     nuxt.options.appConfig.env = env
     if (process.env.TEST) {
       const time = new Date()
+      nuxt.options.appConfig.siteUrl = getSiteUrl(nuxt.options.dev)
       nuxt.options.appConfig.buildInfo = {
         env,
         version: '0.0.0',
@@ -25,12 +26,11 @@ export default defineNuxtModule({
         privacyPolicyDate: time.toISOString(),
       } satisfies BuildInfo
     } else {
-      const [{ env: useEnv, commit, shortCommit, branch }, privacyPolicyDate] = await Promise.all([
-        getEnv(nuxt.options.dev),
-        getFileLastUpdated('app/pages/privacy.vue'),
-      ])
+      const [{ env: useEnv, commit, shortCommit, branch, siteUrl }, privacyPolicyDate] =
+        await Promise.all([getEnv(nuxt.options.dev), getFileLastUpdated('app/pages/privacy.vue')])
       env = useEnv
       nuxt.options.appConfig.env = useEnv
+      nuxt.options.appConfig.siteUrl = siteUrl
       nuxt.options.appConfig.buildInfo = {
         version,
         time: +Date.now(),
@@ -52,6 +52,7 @@ export default defineNuxtModule({
 declare module '@nuxt/schema' {
   interface AppConfig {
     env: BuildInfo['env']
+    siteUrl: string
     buildInfo: BuildInfo
   }
 }

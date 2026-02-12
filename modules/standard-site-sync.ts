@@ -4,7 +4,7 @@ import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
 import { safeParse } from 'valibot'
 import * as site from '../shared/types/lexicons/site'
 import { BlogPostSchema } from '../shared/schemas/blog'
-import { NPMX_SITE } from '../shared/utils/constants'
+import { NPMX_SITE_PROD } from '../shared/utils/constants'
 import { read } from 'gray-matter'
 import { TID } from '@atproto/common'
 import { Client } from '@atproto/lex'
@@ -43,7 +43,7 @@ export default defineNuxtModule({
         // Process files in parallel
         await Promise.all(
           batch.map(file =>
-            syncFile(file, NPMX_SITE, client).catch(error =>
+            syncFile(file, NPMX_SITE_PROD, client).catch(error =>
               console.error(`[standard-site-sync] Error in ${file}:` + error),
             ),
           ),
@@ -61,7 +61,7 @@ export default defineNuxtModule({
       }
 
       // Process add/change events only
-      await syncFile(resolve(nuxt.options.rootDir, path), NPMX_SITE, client).catch(err =>
+      await syncFile(resolve(nuxt.options.rootDir, path), NPMX_SITE_PROD, client).catch(err =>
         console.error(`[standard-site-sync] Failed ${path}:`, err),
       )
     })

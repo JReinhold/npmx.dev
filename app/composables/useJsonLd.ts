@@ -18,11 +18,13 @@ export function setJsonLd(schema: WithContext<Thing> | WithContext<Thing>[]): vo
 /**
  * Create WebSite schema with search action
  */
-export function createWebSiteSchema(options?: {
-  name?: string
-  description?: string
-}): WithContext<WebSite> {
-  const siteUrl = 'https://npmx.dev'
+export function createWebSiteSchema(
+  siteUrl: string,
+  options?: {
+    name?: string
+    description?: string
+  },
+): WithContext<WebSite> {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
