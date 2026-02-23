@@ -387,7 +387,7 @@ function getAriaLabel(c: GitHubContributor): string {
       <div
         id="shared-contributor-popover"
         popover="manual"
-        class="fixed top-0 inset-is-0 m-0 border-none bg-transparent p-0 overflow-visible opacity-0 invisible transition-[opacity,visibility] duration-150 ease-out allow-discrete popover-open:(opacity-100 visible) z-40"
+        class="fixed top-0 force-left-0 m-0 border-none bg-transparent p-0 overflow-visible opacity-0 invisible transition-[opacity,visibility] duration-150 ease-out allow-discrete popover-open:(opacity-100 visible) z-40"
         @mouseenter="cancelClose"
         @mouseleave="onMouseLeave"
       >
@@ -498,7 +498,7 @@ function getAriaLabel(c: GitHubContributor): string {
 
           <div
             aria-hidden="true"
-            class="popover-arrow absolute inset-is-1/2 z-0 h-3 w-3 border-border-subtle bg-bg-elevated will-change-transform"
+            class="popover-arrow absolute force-left-1/2 z-0 h-3 w-3 border-border-subtle bg-bg-elevated will-change-transform"
             :class="
               isFlipped ? 'top-[-6px] border-te border-is' : 'bottom-[-6px] border-be border-ie'
             "
@@ -515,7 +515,7 @@ function getAriaLabel(c: GitHubContributor): string {
   display: none;
 }
 [popover] {
-  @apply top-0 inset-is-0;
+  @apply top-0 force-left-0 force-right-unset;
   will-change: transform, opacity;
   transition:
     opacity 0.15s ease-out,
