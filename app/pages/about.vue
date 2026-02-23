@@ -393,9 +393,9 @@ function getAriaLabel(c: GitHubContributor): string {
       >
         <div
           v-if="activeContributor"
-          class="relative z-10 w-64 rounded-xl border border-border-subtle bg-bg-elevated p-4 shadow-2xl text-start"
+          class="flex flex-col gap-y-3 relative z-10 w-64 rounded-xl border border-border-subtle bg-bg-elevated p-4 shadow-2xl text-start"
         >
-          <div class="flex flex-col gap-1 min-w-0">
+          <div class="flex flex-col gap-2 min-w-0">
             <span class="w-full font-sans font-bold text-fg leading-tight truncate block">
               {{ activeContributor.name || activeContributor.login }}
             </span>
@@ -407,14 +407,14 @@ function getAriaLabel(c: GitHubContributor): string {
             </div>
             <p
               v-if="activeContributor.bio"
-              class="mt-1 font-sans text-xs text-fg-subtle line-clamp-3 leading-relaxed"
+              class="font-sans text-xs text-fg-subtle line-clamp-3 leading-relaxed"
             >
               "{{ activeContributor.bio }}"
             </p>
 
             <div
               v-if="activeContributor.companyHTML"
-              class="mt-1 flex items-center gap-1 font-sans text-2xs text-fg-muted text-start min-w-0"
+              class="flex items-center gap-1 font-sans text-2xs text-fg-muted text-start min-w-0"
             >
               <div
                 class="i-lucide:building-2 size-3 shrink-0 mt-0.5 text-accent/80"
@@ -428,7 +428,7 @@ function getAriaLabel(c: GitHubContributor): string {
 
             <div
               v-else-if="activeContributor.company"
-              class="mt-1 flex items-center gap-1 font-sans text-2xs text-fg-muted text-start min-w-0"
+              class="flex items-center font-sans text-2xs text-fg-muted text-start min-w-0"
             >
               <div
                 class="i-lucide:building-2 size-3 shrink-0 mt-0.5 text-accent/80"
@@ -442,7 +442,7 @@ function getAriaLabel(c: GitHubContributor): string {
             </div>
           </div>
 
-          <div class="mt-3 flex flex-col gap-1 text-3xs text-fg-subtle font-sans">
+          <div class="flex flex-col gap-2 text-3xs text-fg-subtle font-sans">
             <div v-if="activeContributor.location" class="flex items-center gap-1 min-w-0">
               <div class="i-lucide:map-pin size-3 shrink-0" aria-hidden="true" />
               <span class="w-full truncate">{{ activeContributor.location }}</span>
@@ -473,7 +473,7 @@ function getAriaLabel(c: GitHubContributor): string {
           </div>
 
           <div
-            class="mt-3 flex items-center justify-between border-t border-t-gray-400/65 dark:border-t-gray-300 border-border-subtle pt-3"
+            class="flex items-center justify-between border-t border-t-gray-400/65 dark:border-t-gray-300 border-border-subtle pt-3"
           >
             <a
               :href="activeContributor.html_url"
