@@ -88,7 +88,12 @@ async function positionPopover(anchorId: string) {
   if (!popover.matches(':popover-open')) {
     try {
       ;(popover as any).showPopover()
-    } catch (e) {}
+    } catch (e) {
+      if (import.meta.dev) {
+        // oxlint-disable-next-line no-console
+        console.warn('[positionPopover] showPopover failed:', e)
+      }
+    }
   }
 
   // 3. One more tick to ensure the DOM is actually painted with the content
@@ -161,7 +166,7 @@ function onMouseLeave() {
       } catch (e) {
         if (import.meta.dev) {
           // oxlint-disable-next-line no-console
-          console.warn('[positionPopover] showPopover failed:', e)
+          console.warn('[onMouseLeave] hidePopover failed:', e)
         }
       }
       activeContributor.value = null
