@@ -360,7 +360,7 @@ function onMouseLeave() {
               {{ activeContributor.name || activeContributor.login }}
             </span>
             <div
-              v-if="activeContributor.role"
+              v-if="roleLabels[activeContributor.role]"
               class="font-mono text-3xs uppercase tracking-wider text-accent font-bold"
             >
               {{ roleLabels[activeContributor.role] }}
@@ -371,8 +371,9 @@ function onMouseLeave() {
             >
               "{{ activeContributor.bio }}"
             </p>
+
             <div
-              v-if="activeContributor.companyHTML || activeContributor.company"
+              v-if="activeContributor.companyHTML"
               class="mt-1 flex items-center gap-1 font-sans text-2xs text-fg-muted text-start min-w-0"
             >
               <div
@@ -381,8 +382,23 @@ function onMouseLeave() {
               />
               <div
                 class="company-content leading-relaxed break-words min-w-0 [&_a]:(text-accent no-underline hover:underline transition-all)"
-                v-html="activeContributor.companyHTML || activeContributor.company"
+                v-html="activeContributor.companyHTML"
               />
+            </div>
+
+            <div
+              v-else-if="activeContributor.company"
+              class="mt-1 flex items-center gap-1 font-sans text-2xs text-fg-muted text-start min-w-0"
+            >
+              <div
+                class="i-lucide:building-2 size-3 shrink-0 mt-0.5 text-accent/80"
+                aria-hidden="true"
+              />
+              <div
+                class="company-content leading-relaxed break-words min-w-0 [&_a]:(text-accent no-underline hover:underline transition-all)"
+              >
+                {{ activeContributor.company }}
+              </div>
             </div>
           </div>
 
