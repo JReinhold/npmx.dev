@@ -1,3 +1,5 @@
+import sanitize from 'sanitize-html'
+
 export type Role = 'steward' | 'maintainer' | 'contributor'
 
 export interface GitHubUserData {
@@ -38,6 +40,24 @@ const DEFAULT_USER_INFO: GitHubUserData = {
   location: null,
   websiteUrl: null,
   twitterUsername: null,
+}
+
+// Configure sanitize-html for GitHub's companyHTML and company fields
+const SANITIZE_HTML_OPTIONS: sanitize.IOptions = {
+  allowedTags: ['a', 'span', 'strong', 'em', 'code'],
+  allowedAttributes: {
+    a: ['href', 'target', 'rel'],
+  },
+  transformTags: {
+    a: (tagName, attribs) => ({
+      tagName,
+      attribs: {
+        ...attribs,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      },
+    }),
+  },
 }
 
 interface TeamMembers {
@@ -85,22 +105,14 @@ async function fetchTeamMembers(token: string): Promise<TeamMembers | null> {
 }
 
 /**
- * Cleans GitHub HTML to remove tracking data and add security attributes.
- * Specifically targets data-octo, data-hovercard, and keyboard shortcuts.
+ * Sanitizes GitHub HTML to remove XSS vectors while preserving safe formatting.
+ * Applies to both rich companyHTML and plain-text company fields.
  */
 function sanitizeGitHubHTML(html: string | null): string | null {
   if (!html) return null
 
-  return (
-    html
-      // 1. Remove GitHub-specific tracking and metadata attributes
-      .replace(/\s(data-hovercard-[a-z-]+|data-octo-[a-z-]+|aria-keyshortcuts)="[^"]*"/gi, '')
-      // 2. Inject security and target attributes to all <a> tags
-      .replace(/<a /gi, '<a target="_blank" rel="noopener noreferrer" ')
-      // 3. Clean up any resulting double spaces
-      .replace(/\s{2,}/g, ' ')
-      .trim()
-  )
+  const cleaned = sanitize(html.trim(), SANITIZE_HTML_OPTIONS)
+  return cleaned === '' ? null : cleaned
 }
 
 /**
