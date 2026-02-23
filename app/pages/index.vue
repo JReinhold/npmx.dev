@@ -125,12 +125,12 @@ function recentItemRoute(item: RecentItem): RouteLocationRaw {
         <ClientOnly>
           <nav
             v-if="recentItems.length > 0"
-            :aria-label="$t('nav.recently_viewed')"
+            aria-labelledby="recently-viewed-label"
             class="text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
             style="animation-delay: 0.3s"
           >
             <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-3">
-              <span class="text-xs text-fg-subtle tracking-wider">
+              <span id="recently-viewed-label" class="text-xs text-fg-subtle tracking-wider">
                 {{ $t('nav.recently_viewed') }}:
               </span>
               <ul

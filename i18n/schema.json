@@ -202,9 +202,6 @@
         "main_navigation": {
           "type": "string"
         },
-        "popular_packages": {
-          "type": "string"
-        },
         "recently_viewed": {
           "type": "string"
         },
