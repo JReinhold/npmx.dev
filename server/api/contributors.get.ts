@@ -30,6 +30,16 @@ type GitHubAPIContributor = Omit<GitHubContributor, 'role' | 'sponsors_url' | ke
 // Only stewards are shown as maintainers; everyone else is a contributor.
 const FALLBACK_STEWARDS = new Set(['danielroe', 'patak-dev'])
 
+const DEFAULT_USER_INFO: GitHubUserData = {
+  name: null,
+  bio: null,
+  company: null,
+  companyHTML: null,
+  location: null,
+  websiteUrl: null,
+  twitterUsername: null,
+}
+
 interface TeamMembers {
   steward: Set<string>
   maintainer: Set<string>
@@ -246,7 +256,7 @@ export default defineCachedEventHandler(
     return filtered
       .map(c => {
         const { role, order } = getRoleInfo(c.login, teams)
-        const userInfo = userData.get(c.login) || {}
+        const userInfo = userData.get(c.login) ?? DEFAULT_USER_INFO
         const sponsors_url = sponsorable.has(c.login)
           ? `https://github.com/sponsors/${c.login}`
           : null
