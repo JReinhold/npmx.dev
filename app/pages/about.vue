@@ -4,17 +4,6 @@ import type { Role, GitHubContributor } from '#server/api/contributors.get'
 const router = useRouter()
 const canGoBack = useCanGoBack()
 
-// SSR & Validation Fix
-const isMounted = shallowRef(false)
-const activeContributor = shallowRef<GitHubContributor | null>(null)
-const openTimer = shallowRef<any>(null)
-const closeTimer = shallowRef<any>(null)
-const isFlipped = shallowRef(false)
-
-onMounted(() => {
-  isMounted.value = true
-})
-
 useSeoMeta({
   title: () => `${$t('about.title')} - npmx`,
   ogTitle: () => `${$t('about.title')} - npmx`,
@@ -28,6 +17,21 @@ defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
   title: 'about npmx',
   description: 'a fast, modern browser for the **npm registry**',
+})
+
+const isMounted = shallowRef(false)
+const activeContributor = shallowRef<GitHubContributor | null>(null)
+const openTimer = shallowRef<ReturnType<typeof setTimeout> | undefined>()
+const closeTimer = shallowRef<ReturnType<typeof setTimeout> | undefined>()
+const isFlipped = shallowRef(false)
+
+onMounted(() => {
+  isMounted.value = true
+})
+
+onBeforeUnmount(() => {
+  if (openTimer.value) clearTimeout(openTimer.value)
+  if (closeTimer.value) clearTimeout(closeTimer.value)
 })
 
 const pmLinks = {
@@ -141,7 +145,7 @@ function onMouseEnter(contributor: GitHubContributor) {
 function cancelClose() {
   if (closeTimer.value) {
     clearTimeout(closeTimer.value)
-    closeTimer.value = null
+    closeTimer.value = undefined
   }
 }
 
