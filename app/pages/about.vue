@@ -455,7 +455,7 @@ function getAriaLabel(c: GitHubContributor): string {
               rel="noopener noreferrer"
               class="flex items-center gap-1 hover:text-accent transition-colors"
             >
-              <div class="i-lucide:link size-3 shrink-0" />
+              <div class="i-lucide:link size-3 shrink-0" aria-hidden="true" />
               <span class="truncate">{{
                 activeContributor.websiteUrl.replace(/^https?:\/\//, '')
               }}</span>
@@ -467,7 +467,7 @@ function getAriaLabel(c: GitHubContributor): string {
               rel="noopener noreferrer"
               class="flex items-center gap-1 hover:text-accent transition-colors"
             >
-              <div class="i-simple-icons:x size-2.5 shrink-0" />
+              <div class="i-simple-icons:x size-2.5 shrink-0" aria-hidden="true" />
               <span>@{{ activeContributor.twitterUsername }}</span>
             </a>
           </div>
