@@ -103,7 +103,7 @@ function cleanString(val: string | null, url = false): string | null {
   if (!url) {
     return val
   }
-  return val.startsWith('https://') || val.startsWith('http:') ? val : null
+  return val.startsWith('https://') || val.startsWith('http://') ? val : null
 }
 
 /**
