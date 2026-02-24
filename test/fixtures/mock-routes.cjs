@@ -521,6 +521,25 @@ function matchGitHubApi(urlString) {
 }
 
 /**
+ * @param {string} _urlString
+ * @returns {MockResponse | null}
+ */
+function matchAlgoliaApi(_urlString) {
+  return json({
+    hits: [
+      { name: 'nuxt', downloadsLast30Days: 500000, modified: new Date().toISOString() },
+      { name: 'pnpm', downloadsLast30Days: 800000, modified: new Date().toISOString() },
+      { name: 'express', downloadsLast30Days: 1000000, modified: new Date().toISOString() },
+      { name: 'minimatch', downloadsLast30Days: 600000, modified: new Date().toISOString() },
+      { name: 'next', downloadsLast30Days: 700000, modified: new Date().toISOString() },
+      { name: 'axios', downloadsLast30Days: 900000, modified: new Date().toISOString() },
+      { name: 'remix', downloadsLast30Days: 400000, modified: new Date().toISOString() },
+      { name: 'webpack', downloadsLast30Days: 750000, modified: new Date().toISOString() },
+    ],
+  })
+}
+
+/**
  * Route definitions mapping URL patterns to their matchers.
  * Each entry has a pattern (for Playwright's page.route) and a match function
  * that returns a MockResponse or null.
@@ -549,6 +568,7 @@ const routes = [
     pattern: 'https://constellation.microcosm.blue/**',
     match: matchConstellationApi,
   },
+  { name: 'Algolia API', pattern: 'https://*-dsn.algolia.net/**', match: matchAlgoliaApi },
 ]
 
 /**

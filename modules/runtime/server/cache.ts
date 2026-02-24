@@ -240,6 +240,24 @@ function getMockForUrl(url: string): MockResult | null {
     return null
   }
 
+  // Algolia npm-search API - return mock popular packages
+  if (host.endsWith('-dsn.algolia.net') && pathname.endsWith('/query')) {
+    return {
+      data: {
+        hits: [
+          { name: 'nuxt', downloadsLast30Days: 500_000, modified: new Date().toISOString() },
+          { name: 'pnpm', downloadsLast30Days: 800_000, modified: new Date().toISOString() },
+          { name: 'express', downloadsLast30Days: 1_000_000, modified: new Date().toISOString() },
+          { name: 'minimatch', downloadsLast30Days: 600_000, modified: new Date().toISOString() },
+          { name: 'next', downloadsLast30Days: 700_000, modified: new Date().toISOString() },
+          { name: 'axios', downloadsLast30Days: 900_000, modified: new Date().toISOString() },
+          { name: 'remix', downloadsLast30Days: 400_000, modified: new Date().toISOString() },
+          { name: 'webpack', downloadsLast30Days: 750_000, modified: new Date().toISOString() },
+        ],
+      },
+    }
+  }
+
   // esm.sh is handled specially via $fetch.raw override, not here
   // Return null to indicate no mock available at the cachedFetch level
 
