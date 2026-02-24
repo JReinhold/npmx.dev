@@ -50,6 +50,14 @@ watch(handleInput, newHandleInput => {
     handleInput.value = normalized
   }
 })
+
+watch(user, async newUser => {
+  if (newUser?.relogin) {
+    await authRedirect(newUser.did, {
+      redirectTo: route.fullPath,
+    })
+  }
+})
 </script>
 
 <template>
@@ -132,7 +140,7 @@ watch(handleInput, newHandleInput => {
         type="button"
         class="w-full"
         @click="handleBlueskySignIn"
-        classicon="i-carbon:logo-bluesky"
+        classicon="i-simple-icons:bluesky"
       >
         {{ $t('auth.modal.connect_bluesky') }}
       </ButtonBase>

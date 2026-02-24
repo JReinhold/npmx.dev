@@ -3,17 +3,28 @@ import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '~/composables/useColors'
 import type { WeeklyDataPoint } from '~/types/chart'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
+import type { RepoRef } from '#shared/utils/git-providers'
+import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
 
 const props = defineProps<{
   packageName: string
   createdIso: string | null
+  repoRef?: RepoRef | null | undefined
 }>()
 
 const router = useRouter()
 const route = useRoute()
+const { settings } = useSettings()
 
 const chartModal = useModal('chart-modal')
 const hasChartModalTransitioned = shallowRef(false)
+
+const modalTitle = computed(() => {
+  const facet = route.query.facet as string | undefined
+  if (facet === 'likes') return $t('package.trends.items.likes')
+  if (facet === 'contributors') return $t('package.trends.items.contributors')
+  return $t('package.trends.items.downloads')
+})
 
 const isChartModalOpen = shallowRef<boolean>(false)
 
@@ -77,6 +88,12 @@ const { colors } = useCssVariables(
     watchResize: false, // set to true only if a var changes color on resize
   },
 )
+
+function toggleSparklineAnimation() {
+  settings.value.sidebar.animateSparkline = !settings.value.sidebar.animateSparkline
+}
+
+const hasSparklineAnimation = computed(() => settings.value.sidebar.animateSparkline)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
@@ -160,7 +177,7 @@ watch(
   () => loadWeeklyDownloads(),
 )
 
-const dataset = computed(() =>
+const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
   weeklyDownloads.value.map(d => ({
     value: d?.value ?? 0,
     period: $t('package.trends.date_range', {
@@ -172,7 +189,7 @@ const dataset = computed(() =>
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
-const config = computed(() => {
+const config = computed<VueUiSparklineConfig>(() => {
   return {
     theme: 'dark',
     /**
@@ -215,14 +232,14 @@ const config = computed(() => {
       line: {
         color: colors.value.borderHover,
         pulse: {
-          show: true, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
+          show: hasSparklineAnimation.value, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
           loop: true, // runs only once if false
           radius: 1.5,
-          color: pulseColor.value,
+          color: pulseColor.value!,
           easing: 'ease-in-out',
           trail: {
             show: true,
-            length: 20,
+            length: 30,
             opacity: 0.75,
           },
         },
@@ -232,7 +249,7 @@ const config = computed(() => {
         stroke: isDarkMode.value ? 'oklch(0.985 0 0)' : 'oklch(0.145 0 0)',
       },
       title: {
-        text: lastDatapoint.value,
+        text: String(lastDatapoint.value),
         fontSize: 12,
         color: colors.value.fgSubtle,
         bold: false,
@@ -255,10 +272,10 @@ const config = computed(() => {
           type="button"
           @click="openChartModal"
           class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
-          :title="$t('package.downloads.analyze')"
-          classicon="i-carbon:data-analytics"
+          :title="$t('package.trends.title')"
+          classicon="i-lucide:chart-line"
         >
-          <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
+          <span class="sr-only">{{ $t('package.trends.title') }}</span>
         </ButtonBase>
         <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
       </template>
@@ -293,6 +310,16 @@ const config = computed(() => {
               </div>
             </template>
           </ClientOnly>
+
+          <div v-if="hasWeeklyDownloads" class="hidden motion-safe:flex justify-end p-1">
+            <ButtonBase size="small" @click="toggleSparklineAnimation">
+              {{
+                hasSparklineAnimation
+                  ? $t('package.trends.pause_animation')
+                  : $t('package.trends.play_animation')
+              }}
+            </ButtonBase>
+          </div>
         </template>
         <p v-else class="py-2 text-sm font-mono text-fg-subtle">
           {{ $t('package.trends.no_data') }}
@@ -303,7 +330,7 @@ const config = computed(() => {
 
   <PackageChartModal
     v-if="isChartModalOpen && hasWeeklyDownloads"
-    :title="$t('package.downloads.modal_title')"
+    :modal-title="modalTitle"
     @close="handleModalClose"
     @transitioned="handleModalTransitioned"
   >
@@ -315,6 +342,7 @@ const config = computed(() => {
         :weeklyDownloads="weeklyDownloads"
         :inModal="true"
         :packageName="props.packageName"
+        :repoRef="props.repoRef"
         :createdIso="createdIso"
         permalink
         show-facet-selector
@@ -352,7 +380,9 @@ const config = computed(() => {
 .vue-ui-sparkline-title span {
   padding: 0 !important;
   letter-spacing: 0.04rem;
+  @apply font-mono;
 }
+
 .vue-ui-sparkline text {
   font-family:
     Geist Mono,
